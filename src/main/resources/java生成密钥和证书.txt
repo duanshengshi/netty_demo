@@ -1,0 +1,14 @@
+1、生成服务端私钥，并且导入到服务端KeyStore文件中
+keytool -genkey -alias serverkey -keystore kserver.keystore
+过程中，分别需要填写，根据需求自己设置就行
+2、根据私钥，导出服务端证书
+keytool -export -alias serverkey -keystore kserver.keystore -file server.crt
+server.crt就是服务端的证书
+3、将服务端证书，导入到客户端的Trust KeyStore中
+keytool -import -alias serverkey -file server.crt -keystore tclient.keystore
+tclient.keystore是给客户端用的，其中保存着受信任的证书
+
+采用同样的方法，生成客户端的私钥，客户端的证书，并且导入到服务端的Trust KeyStore中
+1）keytool -genkey -alias clientkey -keystore kclient.keystore
+2）keytool -export -alias clientkey -keystore kclient.keystore -file client.crt
+3）keytool -import -alias clientkey -file client.crt -keystore tserver.keystore
